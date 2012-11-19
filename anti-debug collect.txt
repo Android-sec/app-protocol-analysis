@@ -1,0 +1,19 @@
+如果我们在普通的程序中用int 2dh,那就会产生异常，如果程序被调试的话就不会产生异常，利用这一点就可以来检查调试器。
+
+;       push    offset _seh     ;
+;       push    fs:[0]          ; > 设置seh
+;       mov     fs:[0], esp     ;/
+;
+;       int     2dh             ; 如果被调试则正常运行
+;                               ; 否则异常
+;       nop
+;       pop     fs:[0]          ;\ 清楚seh
+;       add     esp, 4          ;/
+;
+;       ...
+;       debugger detected         检查到调试器时运行
+;       ...
+;
+;       _seh:
+;       debugger not detected   未检查到调试器时运行
+http://rewolf.pl/int.2d.antidebug.and.code.obfuscation.txt
