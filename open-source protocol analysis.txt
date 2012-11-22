@@ -1,0 +1,70 @@
+一.开源P2P协议
+1. BT
+    BT的协议包括几个部分：
+   （1）Peer or Node lookup: 有HTTP TRACKER协议，UDP TRACKER协议和DHT
+   （2）Transport：使用TCP
+    如果要下载BT，就必须要下载一个BT种子文件（一般以.torrent结尾),这个种子文件中包含了如何查找以及到那里查找Peer的信息，一起要下载的文件的信息，如名称，MD5  HASH值等等。
+    因此，如果要控制BT下载，可以从以下几个方式下手：
+    (1)控制种子下载
+    (2)控制Peer之间的transport
+   控制种子下载就必须能够识别HTTP TRACKER，UDP TRACKER和DHT协议，这些Panabit都可以。
+   控制Peer之间的transport就必须能够识别BT传输协议，另外想BitComet为了逃避监管，有可能会使用自己的加密协议，这些Panabit都可以识别。Panabit会采取一种很特殊但是巧妙的方式来识别加密协议。
+   现在所有的BT协议都采取随机端口，端口都不是固定的，这就是为什么传统的防火墙无法控制的原因。
+
+2. eMule
+   eMule是在edonkey协议上发展起来的，但是eMule为了逃避监管使用了加密的协议。eMule的端口也是随机产生的，eMule也可以使用DHT方式来lookup。Panabit可以100%识别eMule加密协议。
+
+3.BitComet 备注 
+---------------------------------------------------------------------
+数据传输方式，一共有下面几种。
+1 基于BT协议的传输
+dht 连接
+tracker连接
+   http tracker 连接
+   发送/announce?info_hash类似的请求
+   udp tracker 连接
+   发送固定长度的64位的固定数值+一个事务ID进行请求
+   
+2 基于HTTP/FTP协议的传输
+3 基于长效种子的传输
+{
+    //向特定的服务器发送请求，来返回相关信息
+    基于长效种子传输又分为两种
+   {
+        3.1 基于tcp协议的传输
+        (该类型基于http协议的数据传输)
+        //相关数据报文如下：
+GET /Ge+_OYn_vXIqPRtzRJdqapAnM-6Y9+k6-mOvw5reCd4_WubSz-XZG?rtIQ6kj99__nkqqQflXR9BEikd-omz+Faw4aJA2EtMK-0vfsl+2ZS72-xyOoZ0uY-zJHb9_J_Os HTTP/1.1
+Host: 114.33.17.152
+Keep-Alive: 300
+Connection: Keep-alive
+Accept: */*
+Range: bytes=5737092831-5737273343
+User-Agent: Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.0; .NET CLR 1.1.4322)
+Pragma: no-cache
+Cache-Control: no-cache
+Cookie: 1cd5=6747d11a3df24f2cfc812fb2c0bc2dfc561b
+        
+        3.2 基于udp协议的传输
+
+    }
+}
+--------------------------------------------------------------------------
+
+二.DHT
+DHT的包都是UDP的
+DHT网络原理以及BitComet、Bittorrent是如何连入DHT网络的？
+
+1、DHT全称叫分布式哈希表(Distributed Hash Table)，是一种分布式存储方法。在不需要服务器的情况下，每个客户端负责一个小范围的路由，并负责存储一小部分数据，从而实现整个DHT网络的寻址和存储。目前BitComet允许同行连接DHT网络和Tracker，也就是说在完全不连上Tracker服务器的情况下，也可以很好的下载，因为它可以在DHT网络中寻找下载同一文件的其他用户。BitComet的DHT网络协议和BitTorrent的协议完全兼容，也就是说可以连入一个同DHT网络分享数据。 另外，这里使用的DHT算法叫Kademlia（在eMule中也有使用，常把它叫做KAD，具体实现协议有所不同）。 
+2、连入DHT网络的用户叫做节点(node)，节点之间互相有路由记录，因此只要和任何一个已经在DHT网络中的节点连接上，客户端就可以寻找到更多的节点，从而连入网络。
+
+
+三.参考
+bt作者
+http://www.advogato.org/article/258.html
+baike tracker
+http://baike.baidu.com/view/365668.htm
+DHT协议
+http://blog.csdn.net/xxxxxx91116/article/details/7970815
+P2P开源软件 ====分析协议算法啥的
+与bt类似的

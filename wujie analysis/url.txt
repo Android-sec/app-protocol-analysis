@@ -1,0 +1,5 @@
+http://hypersecurity.blogspot.com/2011/07/blocking-ultrasurf.html
+
+blocking Ultrasurf
+
+http://wiki.mikrotik.com/wiki/How_to_Detect_and_Block_UltraSurf_program_traffic
