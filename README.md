@@ -1,4 +1,4 @@
 app-protocol-analysis
 =====================
 
-just for app protocol analysis
+针对app分析相关，主要是一些应用软件通信协议逆向、应用软件加密解密，脱壳、破解等等app相关的
