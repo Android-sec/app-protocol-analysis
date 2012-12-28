@@ -1,0 +1,63 @@
+在做风行软件的协议分析，在整个软件的协议分析过程中，从导师那里了解到了fsp文件就是种子文件，其结构就是普通的BT种子结构(.torrent)，也了解到了目前设备上规则的阻断主要是采用阻断请求ls3.fspcdn.com下载fsp种子这个过程。
+      来nsfocus后分析了好多p2p软件，例如QVOD，还有目前的风行，bittorrent等等，在这里饶有兴趣的想开发一个BT下载软件(linux版，并且可能会进行win版开发)。
+自己将在这边不断地补充BT的日志，最终完成这个软件版本。后期将有自己对这些软件的逆向分析文章。达到对P2P软件分析的一个比较深入的了解。
+ 
+首先是BT种子解析:
+       BT种子文件使用了一种叫bencoding的编码方法来保存数据。 
+bencoding现有四种类型的数据：srings(字符串)，integers(整数)，lists(列表)，dictionaries(字典) 
+编码规则如下： 
+strings(字符串)编码为：<字符串长度>：<字符串> 
+例如： 4:test 表示为字符串"test" 
+4:例子 表示为字符串“例子” 
+字符串长度单位为字节 
+没开始或结束标记
+integers(整数)编码为：i<整数>e 
+开始标记i，结束标记为e 
+例如： i1234e 表示为整数1234 
+i-1234e 表示为整数-1234 
+整数没有大小限制 
+i0e 表示为整数0 
+i-0e 为非法 
+以0开头的为非法如： i01234e 为非法
+lists(列表)编码为：le 
+开始标记为l,结束标记为e 
+列表里可以包含任何bencoding编码类型，包括整数，字符串，列表，字典。 
+例如： l4:test5:abcdee 表示为二个字符串["test","abcde"]
+dictionaries(字典)编码为de 
+开始标记为d,结束标记为e 
+关键字必须为bencoding字符串 
+值可以为任何bencoding编码类型 
+例如： d3:agei20ee 表示为 
+d4:path3:C::filename8:test.txte 表示为{"path"="C:\","filename"="test.txt"}
+具体文件结构如下： 
+全部内容必须都为bencoding编码类型。 
+整个文件为一个字典结构,包含如下关键字 
+announce:tracker服务器的URL(字符串) 
+announce-list(可选):备用tracker服务器列表(列表) 
+creation date(可选):种子创建的时间，Unix标准时间格式，从1970 1月1日 00:00:00到创建时间的秒数(整数) 
+comment(可选):备注(字符串) 
+created by(可选):创建人或创建程序的信息(字符串) 
+info:一个字典结构，包含文件的主要信息，为分二种情况：单文件结构或多文件结构 
+单文件结构如下： 
+      length:文件长度，单位字节(整数) 
+      md5sum(可选)：长32个字符的文件的MD5校验和，BT不使用这个值，只是为了兼容一些程序所保留!(字符串) 
+      name:文件名(字符串) 
+      piece length:每个块的大小，单位字节(整数) 
+      pieces:每个块的20个字节的SHA1 Hash的值(二进制格式) 
+多文件结构如下： 
+      files:一个字典结构 
+          length:文件长度，单位字节(整数) 
+          md5sum(可选):同单文件结构中相同 
+          path:文件的路径和名字，是一个列表结构，如\test\test.txt 列表为l4:test8test.txte 
+      name:最上层的目录名字(字符串) 
+      piece length:同单文件结构中相同 
+      pieces:同单文件结构中相同 
+实例： 
+用记事本打开一个.torrent可以看来类似如下内容 
+d8:announce35:http://www.manfen.net:7802/announce13:creation datei1076675108e4:infod6:lengthi17799e4:name62:MICROSOFT.WINDOWS.2000.AND.NT4.SOURCE.CODE-SCENELEADER.torrent12:piece lengthi32768e6:pieces20:?W ?躐?緕排T酆ee
+很容易看出 
+announce＝http://www.manfen.net:7802/announce
+creation date＝1076675108秒(02/13/04 20:25:08) 
+文件名=MICROSOFT.WINDOWS.2000.AND.NT4.SOURCE.CODE-SCENELEADER.torrent 
+文件大小＝17799字节 
+文件块大小＝32768字节
