@@ -9,3 +9,22 @@ emule
    正常解码进行模式匹配
 
 
+
+消息头
+所有的消息有一个6字节的头，头有着下面的结构：
+1.协议- 一个字节，协议ID-0xE3是eDonkey，0xC5是eMule
+2.大小-4字节消息大小- 消息大小，以字节为单位，不包含头，例如，如果消息不包含
+任何有效负载，如6.4.11节中，则消息长度是零。
+3.类型- 一个字节，类型- 独一无二的消息ID
+
+#define OP_EDONKEYHEADER	 0xE3
+#define OP_KADEMLIAHEADER	 0xE4
+#define OP_KADEMLIAPACKEDPROT	0xE5
+#define OP_EDONKEYPROT	 OP_EDONKEYHEADER
+#define OP_PACKEDPROT	 0xD4
+#define OP_EMULEPROT	 0xC5
+#define OP_MLDONKEYPROT	 0x00
+
+
+#define OP_PORTTEST	 0xFE	// Connection Test
+
