@@ -1,3 +1,7 @@
+从StrongOD、PhantOm、Olly Advanced几个重点的插件入手
+
+http://bbs.pediy.com/showthread.php?t=70470
+
 如果我们在普通的程序中用int 2dh,那就会产生异常，如果程序被调试的话就不会产生异常，利用这一点就可以来检查调试器。
 
 ;       push    offset _seh     ;
