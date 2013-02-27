@@ -1,0 +1,16 @@
+android上分析一些P2P流媒体，老实说，更难，因为一般都是jni方式调用so，而把一些核心协议相关的都在so中
+android动态调试还是有不少难点
+单纯反编译出java一般都是一些功能性的
+
+
+
+http://xjaphx.wordpress.com/2011/06/26/create-and-use-emulated-sd-card/
+http://blog.csdn.net/wuchuanpingstone/article/details/6531833
+http://www.51testing.com/?uid-241936-action-viewspace-itemid-808668
+
+
+http://mobile.tutsplus.com/tutorials/android/analyzing-android-network-traffic/
+http://blog.csdn.net/moruite/article/details/6095465
+
+http://hi.baidu.com/sip59/item/72279dc1ac242954bdef69f0
+
